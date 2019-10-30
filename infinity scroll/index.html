@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <input type="number" id="column" placeholder="Nhập số cột">
+  <input type="number" id="row" placeholder="Nhập số hàng (>22)">
+  <button onclick="generateNumbers()">OK</button>
+  <table id="grid" border="1px solid green">
+
+  </table>
+
+  <script>
+    function generateNumbers() {
+      let field = document.getElementById("grid");
+      let rows = document.getElementById("row").value;
+      let cols = document.getElementById("column").value;
+      for (let i = 0; i <= rows; i++) {
+        let row = document.createElement("tr");
+        for (let j = 0; j < cols; j++) {
+          if (i === 0) {
+            let header = document.createElement("th");
+            header.innerHTML = j + 1;
+            row.appendChild(header)
+          }
+          else {
+            let item = document.createElement("td")
+            item.innerHTML = Math.floor(Math.random() * 1000);
+            row.appendChild(item);
+          }
+        }
+        field.appendChild(row);
+      }
+    }
+
+      document.addEventListener("scroll", function (event) {
+        checkForNewRecord();
+      });
+
+      var checkForNewRecord = function () {
+        var lastDiv = document.querySelector("#grid > tr:last-child");
+        var lastDivOffset = lastDiv.offsetTop + lastDiv.clientHeight;
+        var pageOffset = window.pageYOffset + window.innerHeight;
+
+        if (pageOffset > lastDivOffset - 10) {
+          generate100Record();
+          checkForNewRecord();
+        }
+      };
+
+      function generate100Record() {
+        let field = document.getElementById("grid");
+      let rows = document.getElementById("row").value;
+      let cols = document.getElementById("column").value;
+      for (let i = 0; i <100; i++) {
+        let row = document.createElement("tr");
+        for (let j = 0; j < cols; j++) {
+            let item = document.createElement("td")
+            item.innerHTML = Math.floor(Math.random() * 1000);
+            row.appendChild(item)      
+        }
+        field.appendChild(row);
+      }
+      }
+  </script>
+
+</body>
+
+</html>

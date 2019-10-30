@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Snake</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h2 style="color: green;">Snake game</h2>
+  <button onclick="play()">Play</button>
+  <input type="number" id="speed" placeholder="Nhập tốc độ cho rắn" value=1>
+  <canvas id="canvas" width="400" height="400"></canvas>
+  <script>
+    let canvas, ctx;
+
+    function play() {
+      canvas = document.getElementById("canvas");
+      ctx = canvas.getContext("2d");
+      document.addEventListener("keydown", keyDownEvent);
+      let speed=document.getElementById("speed").value;
+      setInterval(draw, 1000/speed);
+    }
+
+    let gridSize = (tileSize = 20); // 20 x 20 = 400
+    let nextX = (nextY = 0);
+
+    let defaultTailSize = 2;
+    let tailSize = defaultTailSize;
+    let snakeSize = [];
+    let snakeX = (snakeY = 10);
+
+    let appleX = (appleY = Math.floor(Math.random() * gridSize));
+
+    function draw() {
+
+      snakeX += nextX;
+      snakeY += nextY;
+
+      if (snakeX < 0) {
+        snakeX = gridSize - 1;
+      }
+      if (snakeX > gridSize - 1) {
+        snakeX = 0;
+      }
+      if (snakeY < 0) {
+        snakeY = gridSize - 1;
+      }
+      if (snakeY > gridSize - 1) {
+        snakeY = 0;
+      }
+
+      if (snakeX == appleX && snakeY == appleY) {
+        tailSize++;
+        appleX = Math.floor(Math.random() * gridSize);
+        appleY = Math.floor(Math.random() * gridSize);
+      }
+
+      ctx.fillStyle = "gray";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "black";
+      for (let i = 0; i < snakeSize.length; i++) {
+        ctx.fillRect(snakeSize[i].x * tileSize, snakeSize[i].y * tileSize, tileSize, tileSize);
+        if (snakeSize.length > 2) {
+          if (snakeSize[i].x == snakeX && snakeSize[i].y == snakeY) {
+            reset();
+          }
+        }
+      }
+
+      ctx.fillStyle = "red";
+      ctx.fillRect(appleX * tileSize, appleY * tileSize, tileSize, tileSize);
+
+      snakeSize.push({ x: snakeX, y: snakeY });
+      while (snakeSize.length > tailSize) {
+        snakeSize.shift();
+      }
+    }
+
+    function reset() {
+      alert("☹☹☹☹☹☹☹");
+      snakeX = 20;
+      tailSize = defaultTailSize
+    }
+
+    function keyDownEvent(e) {
+      switch (e.keyCode) {
+        case 37:
+          nextX = -1;
+          nextY = 0;
+          break;
+        case 38:
+          nextX = 0;
+          nextY = -1;
+          break;
+        case 39:
+          nextX = 1;
+          nextY = 0;
+          break;
+        case 40:
+          nextX = 0;
+          nextY = 1;
+          break;
+      }
+    }
+  </script>
+</body>
+
+</html>
